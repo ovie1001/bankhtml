@@ -1,0 +1,65 @@
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+export default function NumberGenerator() {
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState(100);
+  const [count, setCount] = useState(1);
+  const [generatedNumbers, setGeneratedNumbers] = useState<number[]>([]);
+
+  const generateNumbers = () => {
+    const numbers: number[] = [];
+    const actualMin = Math.min(min, max);
+    const actualMax = Math.max(min, max);
+    for (let i = 0; i < count; i++) {
+      numbers.push(Math.floor(Math.random() * (actualMax - actualMin + 1)) + actualMin);
+    }
+    setGeneratedNumbers(numbers);
+  };
+
+  return (
+    <div className="p-6 max-w-xl mx-auto space-y-6">
+      <h1 className="text-3xl font-bold text-center">Universal Number Generator</h1>
+      <Card>
+        <CardContent className="space-y-6 p-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium">Min</label>
+              <Input
+                type="number"
+                value={min}
+                onChange={(e) => setMin(Number(e.target.value))}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Max</label>
+              <Input
+                type="number"
+                value={max}
+                onChange={(e) => setMax(Number(e.target.value))}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">How many</label>
+              <Input
+                type="number"
+                value={count}
+                onChange={(e) => setCount(Number(e.target.value))}
+              />
+            </div>
+          </div>
+          <Button onClick={generateNumbers} className="w-full bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold">
+            Generate Numbers
+          </Button>
+          {generatedNumbers.length > 0 && (
+            <div className="text-center text-lg font-medium text-green-700">
+              Generated: {generatedNumbers.join(", ")}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
